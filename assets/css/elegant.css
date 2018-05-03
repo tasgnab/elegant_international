@@ -1,0 +1,344 @@
+@media (min-width: 768px) {
+  .intro {
+    height: 100%;
+    padding: 0;
+  }
+  .intro .intro-body .brand-heading {
+    font-size: 75px;
+  }
+  .intro .intro-body .intro-text {
+    font-size: 26px;
+  }
+}
+footer{
+	padding: 50px 0 0
+}
+footer h3{
+	font-size: 20px;
+	margin-bottom: 20px
+}
+footer a{
+	font-size: 20px;
+	color: #fff
+}
+footer a:hover,
+footer a:focus{
+	color: #666
+}
+footer .footer-above{
+	margin-bottom: 20px;
+}
+footer .footer-col{
+	padding-bottom: 15px
+}
+footer .footer-below{
+	font-size: 16px;
+}
+#gallery .container-fluid{
+	padding-right: 0;
+	padding-left: 0
+}
+.accordian {
+	/*width: 805px; height: 320px;*/
+	overflow: hidden;
+	
+	/*Time for some styling*/
+	margin: 0px auto;
+	box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.35);
+	-webkit-box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.35);
+	-moz-box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.35);
+}
+
+/*A small hack to prevent flickering on some browsers*/
+.accordian ul {
+	width: 2000px;
+	/*This will give ample space to the last item to move
+	instead of falling down/flickering during hovers.*/
+}
+
+.accordian li {
+	position: relative;
+	display: block;
+	width: 100px;
+	float: left;
+	
+	border-left: 1px solid #888;
+	
+	box-shadow: 0 0 25px 10px rgba(0, 0, 0, 0.5);
+	-webkit-box-shadow: 0 0 25px 10px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow: 0 0 25px 10px rgba(0, 0, 0, 0.5);
+	
+	/*Transitions to give animation effect*/
+	transition: all 1s;
+	-webkit-transition: all 1s;
+	-moz-transition: all 1s;
+	/*If you hover on the images now you should be able to 
+	see the basic accordian*/
+}
+
+/*Reduce with of un-hovered elements*/
+.accordian ul:hover li {width: 100px;}
+/*Lets apply hover effects now*/
+/*The LI hover style should override the UL hover style*/
+.accordian ul li:hover {width: 1024px;}
+
+
+.accordian li img {
+	display: block;
+	max-width: 1024px;
+}
+
+/*Image title styles*/
+.image_title {
+	background: rgba(0, 0, 0, 0.5);
+	position: absolute;
+	left: 0;
+	bottom: 0;	
+	width: 1024px;	
+}
+.image_title a {
+	display: block;
+	color: #fff;
+	text-decoration: none;
+	padding: 20px;
+	font-size: 16px;
+}
+.image_title p{
+	font-size: 14px;
+	text-align: right;
+	padding: 0 20px;
+}
+#gallery.content-section{
+	padding-top: 50px;
+}
+.content-section{
+	padding-top: 200px;
+	/*margin-bottom: 200px;*/
+}
+
+.portfolio-modal .modal-content {
+  border-radius: 0;
+  background-clip: border-box;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border: none;
+  min-height: 100%;
+  padding: 100px 0;
+  text-align: center;
+  background: #000;
+}
+.portfolio-modal .modal-content h2 {
+  margin: 0;
+  font-size: 3em;
+}
+.portfolio-modal .modal-content img {
+  margin-bottom: 30px;
+}
+.portfolio-modal .modal-content .item-details {
+  margin: 30px 0;
+}
+.portfolio-modal .close-modal {
+  position: absolute;
+  width: 75px;
+  height: 75px;
+  background-color: transparent;
+  top: 25px;
+  right: 25px;
+  cursor: pointer;
+}
+.portfolio-modal .close-modal:hover {
+  opacity: 0.3;
+}
+.portfolio-modal .close-modal .lr {
+  height: 75px;
+  width: 1px;
+  margin-left: 35px;
+  background-color: #2C3E50;
+  transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  /* IE 9 */
+  -webkit-transform: rotate(45deg);
+  /* Safari and Chrome */
+  z-index: 1051;
+}
+.portfolio-modal .close-modal .lr .rl {
+  height: 75px;
+  width: 1px;
+  background-color: #2C3E50;
+  transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  /* IE 9 */
+  -webkit-transform: rotate(90deg);
+  /* Safari and Chrome */
+  z-index: 1052;
+}
+.portfolio-modal .modal-backdrop {
+  opacity: 0;
+  display: none;
+}
+
+#stuff img, #stock img{
+	max-width: 290px;
+	margin: 10px auto;
+	cursor: pointer;
+}
+#stuff .row, #stock .row{
+	padding: 25px;
+}
+#stock.content-section{
+	padding-top: 100px;
+}
+#stuff h4{
+	margin: 0
+}
+.image {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
+
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%)
+}
+
+.garment-container:hover .image {
+  opacity: 0.3;
+}
+
+.garment-container:hover .middle {
+  opacity: 1;
+}
+
+.text {
+  color: white;
+  font-size: 16px;
+}
+#stock .input-group{
+	font-family: "Montserrat", "
+	Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.dataTables_paginate a {
+    padding: 6px 9px !important;
+    background: #ddd !important;
+    border-color: #ddd !important
+}
+.dataTables_paginate a {
+    background: #ff0000
+}
+.dataTables_wrapper {
+    position: relative;
+    clear: both;
+    zoom: 1
+}
+.dataTables_processing {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 250px;
+    height: 30px;
+    margin-left: -125px;
+    margin-top: -15px;
+    padding: 14px 0 2px 0;
+    border: 1px solid #ddd;
+    text-align: center;
+    color: #999;
+    font-size: 14px;
+    background-color: white
+}
+.dataTables_length {
+    width: 40%;
+    float: left
+}
+.dataTables_filter {
+    width: 50%;
+    float: right;
+    text-align: right
+}
+.dataTables_info {
+    width: 60%;
+    float: left
+}
+.dataTables_paginate {
+    float: right;
+    text-align: right
+}
+table.dataTable th.focus,
+table.dataTable td.focus {
+    outline: 2px solid #1ABB9C !important;
+    outline-offset: -1px
+}
+
+table.display {
+    margin: 0 auto;
+    clear: both;
+    width: 100%
+}
+table.display thead th {
+    padding: 8px 18px 8px 10px;
+    border-bottom: 1px solid black;
+    font-weight: bold;
+    cursor: pointer
+}
+table.display tfoot th {
+    padding: 3px 18px 3px 10px;
+    border-top: 1px solid black;
+    font-weight: bold
+}
+table.display tr.heading2 td {
+    border-bottom: 1px solid #aaa
+}
+table.display td {
+    padding: 3px 10px
+}
+table.display td.center {
+    text-align: center
+}
+table.display thead th:active,
+table.display thead td:active {
+    outline: none
+}
+.dataTables_scroll {
+    clear: both
+}
+.dataTables_scrollBody {
+    *margin-top: -1px;
+    -webkit-overflow-scrolling: touch
+}
+.top .dataTables_info {
+    float: none
+}
+.clear {
+    clear: both
+}
+.dataTables_empty {
+    text-align: center
+}
+tfoot input {
+    margin: 0.5em 0;
+    width: 100%;
+    color: #444
+}
+tfoot input.search_init {
+    color: #999
+}
+td.group {
+    background-color: #d1cfd0;
+    border-bottom: 2px solid #A19B9E;
+    border-top: 2px solid #A19B9E
+}
+td.details {
+    background-color: #d1cfd0;
+    border: 2px solid #A19B9E
+}
+.example_alt_pagination div.dataTables_info {
+    width: 40%
+}
