@@ -1,39 +1,40 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+class MY_Controller extends CI_Controller {
+  function __construct(){
+    parent::__construct();
+    $this->load->model('MCategory');
+  }
 
-class MY_Controller extends CI_Controller{
-	public function __construct(){
-		parent::__construct();
-	}
+  function is_login(){
+    return $this->session->userdata('is_login');
+  }
 
-	public function isAdmin(){
-		if($this->session->has_userdata('isAdmin')){
-			return $this->session->userdata('isAdmin');
-		}
-		return false;
-	}
+  function set_session_data($username){
+    $this->session->set_userdata('is_login', true);
+    $this->session->set_userdata('username', $username);
+  }
 
-	public function isUser(){
-		if ($this->session->userdata("usertype")==1){
-			return true;
-		}
-		return false;
-	}
-	
-	public function isLogin(){
-		if($this->session->has_userdata('isLogin')){
-			return $this->session->userdata('isLogin');
-		}
-		return false;
-	}
+  function handle_login(){
+    if ($this->is_login())
+      redirect(base_url('dashboard/collection'));
+  }
 
-	public function isDev(){
-		if ($this->config->item('environment')=='development')
-			return true;
-		return false;
-	}
+  function handle_not_login(){
+    if (!$this->is_login())
+      redirect(base_url('dashboard/login'));
+  }
 
-	public function uploadImage(){
+  function handle_error($error_found,$message,$redirect_url){
+    $this->session->set_flashdata('isError', $error_found);
+    if ($error_found){
+      $this->session->set_flashdata('message', $message);
+      redirect(base_url($redirect_url));
+    }
+  }
 
-	}
+  function load_view($view_path, $data=array()){
+    $data['categories'] = $this->MCategory->all_category();
+    $this->load->view($view_path,$data);
+  }
+
 }

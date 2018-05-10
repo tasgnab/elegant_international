@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-$config['company_name'] = 'Sintex';
+$config['company_name'] = 'Elegant International';
 $config['tagline'] = 'Your Solutions';
 $config['redirect_login'] = 'dashboard';
 

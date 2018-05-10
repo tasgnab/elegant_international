@@ -1,6 +1,6 @@
 <?php 
 
-class MLogin extends CI_Model{
+class MLogin extends MY_Model{
 
 	function validateUsername($username){
 		$this->db->where('username',$username);

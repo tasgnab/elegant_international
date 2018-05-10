@@ -53,11 +53,29 @@ $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
+$route['dashboard'] = 'dashboard/login';
+$route['dashboard/login']['get'] = 'dashboard/login';
+$route['dashboard/login']['post'] = 'dashboard/login/do_login';
+$route['dashboard/logout'] = 'dashboard/login/logout';
+$route['dashboard/change_password']['get'] = 'dashboard/login/change_password';
+$route['dashboard/change_password']['post'] = 'dashboard/login/do_change_password';
+
+
+$route['dashboard/collection/add']['get'] = 'dashboard/collection/add';
+$route['dashboard/collection/add']['post'] = 'dashboard/collection/do_add';
+$route['dashboard/collection/edit']['post'] = 'dashboard/collection/do_edit';
+$route['dashboard/collection/favorite']['post'] = 'dashboard/collection/do_favorite';
+$route['dashboard/collection/view/(:any)']['get'] = 'dashboard/collection/view/$1';
+
+$route['dashboard/collection/category/add']['post'] = 'dashboard/collection/do_add_category';
+$route['dashboard/collection/category/edit']['post'] = 'dashboard/collection/do_edit_category';
+$route['dashboard/collection/category/delete']['post'] = 'dashboard/collection/do_delete_category';
+
 $route['dashboard/garment/add']['POST'] = 'dashboard/garment/doInsert';
 $route['dashboard/garment/update']['POST'] = 'dashboard/garment/doEditGarment';
 
-$route['dashboard'] = 'dashboard/login';
-$route['dashboard/logout'] = 'dashboard/login/logout';
-$route['dashboard/login']['POST'] = 'dashboard/login/doLogin';
 
-$route['dashboard/collection/add']['POST'] = 'dashboard/collection/doAddCollection';
+
+
+
+
