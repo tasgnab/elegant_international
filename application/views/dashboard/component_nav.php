@@ -26,7 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<li><a><i class="fa fa-desktop"></i> Collection <span class="fa fa-chevron-down"></span></a>
 						<ul class="nav child_menu">
 							<li><a href="<?=base_url('dashboard/collection/category');?>">Manage Category </a></li>
-							<li><a href="<?=base_url('dashboard/collection/add');?>">Add New Collection </a></li>
+							<li><a href="<?=base_url('dashboard/collection/create');?>">Upload Collection </a></li>
 							<li><a>View Collection <span class="fa fa-chevron-down"></span></a>
 								<ul class="nav child_menu">
 									<?php foreach ($categories->result() as $category): ?>
@@ -38,7 +38,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</li>
 					<li><a><i class="fa fa-sticky-note"></i> Garment <span class="fa fa-chevron-down"></span></a>
 						<ul class="nav child_menu">
-							<li><a href="<?=base_url('dashboard/garment/add');?>">Add New Brand</a></li>
+							<li><a href="<?=base_url('dashboard/garment/brand');?>">View Brands</a></li>
+							<li><a href="<?=base_url('dashboard/garment/brand/add');?>">Add New Brand</a></li>
 							<li><a href="<?=base_url('dashboard/garment');?>">View Garments</a></li>
 						</ul>
 					</li>

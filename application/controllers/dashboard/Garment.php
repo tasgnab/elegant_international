@@ -6,6 +6,7 @@ class Garment extends MY_Controller {
 	function  __construct() {
 		parent::__construct();
 		$this->load->model('mgarment');
+		$this->load->model('MBrand');
 		$this->load->library('image_lib');
 	}
 
@@ -47,20 +48,105 @@ class Garment extends MY_Controller {
 		
 	}
 
-	public function add(){
+	public function brand(){
 		$this->handle_not_login();
+		$this->load_view('dashboard/garment_brand');
+	}
 
-		if ($this->session->has_userdata('step')){
-			if ($this->session->userdata('step')==2){
-				$this->load->view('dashboard/garment_add_image');
-			} else if ($this->session->userdata('step')==3){
-				$data['listImage'] = $this->mgarment->selectImages($this->session->userdata('listImage'));
-				$this->load_view('dashboard/garment_add_code',$data);
-			}
-		} else {
-			$this->load_view('dashboard/garment_add');
+	public function brand_list_page(){
+		$this->handle_not_login();
+		
+		$draw = intval($this->input->get("draw"));
+		$start = intval($this->input->get("start"));
+		$length = intval($this->input->get("length"));
+
+		$brand = $this->MBrand->all_brand();
+		$data = array();
+
+		foreach($brand->result() as $r) {
+			$data[] = array(
+				'<a href="'.base_url('dashboard/collection/view/').$r->id.'">'.$r->brand.'</a>',
+				'<span><a title="Edit" class="btn btn-info" onclick="update(\''.$r->id.'\',\''.$r->brand.'\',\''.$r->description.'\')"><i class="fa fa-pencil"></i></a></span>
+				<span><a title="Delete" class="btn btn-warning" onclick="remove(\''.$r->id.'\',\''.$r->brand.'\')"><i class="fa fa-trash"></i></a></span>
+				<span><a title="Show Homepage" class="btn btn-default '.($r->is_favorite=='Y'?'btn-primary':'').' onclick="show(\''.$r->id.'\',\''.$r->brand.'\')"><i class="fa fa-home"></i></a></span>'
+			);
 		}
-	
+
+		$output = array(
+			"draw" => $draw,
+			"recordsTotal" => $brand->num_rows(),
+			"recordsFiltered" => $brand->num_rows(),
+			"data" => $data
+		);
+		echo json_encode($output);
+		exit();
+	}
+
+	public function do_add_brand(){
+		$this->handle_not_login();
+		$error_found = false;  $redirect_url='dashboard/garment/brand/add';
+		if(!$this->input->post('brand')){
+			$error_found = true;
+			$message = "Title cannot be empty";
+		}
+
+		if(!$error_found && !$this->input->post('description')){
+			$error_found = true;
+			$message = "Description cannot be empty";
+		}
+
+		if(!$error_found && empty($_FILES)){
+			$error_found = true;
+			$message = "Image cannot be empty";
+		}
+
+		$this->session->set_flashdata('isError', $error_found);
+	    if ($error_found){
+	      $this->session->set_flashdata('message', $message);
+	      redirect(base_url($redirect_url));
+	    }
+
+	    $tempFile = $_FILES['file']['tmp_name'];
+		$targetPath = getcwd() . $this->config->item('path_upload_garment');
+		$randomString = random_string('alnum', 8);
+		$fileName = $randomString . '.jpg';
+		$targetFile = $targetPath . $fileName;
+		move_uploaded_file($tempFile, $targetFile);
+
+		$config['image_library'] = 'gd2';
+		$config['source_image'] = $targetFile;
+		$config['maintain_ratio'] = false;
+		$config['new_image'] = $randomString.'_250.jpg';
+		$config['height'] = 250;
+		$config['width'] = 250;
+		$this->image_lib->initialize($config);
+		$this->image_lib->resize();
+
+		$data = array(
+			'brand' => $this->input->post('brand'),
+			'description' => $this->input->post('description'),
+			'image' => $fileName
+		);
+
+		if (!$error_found && !$this->handleInsertBrand($data)) {
+			$error_found = true;
+			$message = "Failed to insert brand";
+		}
+
+		$this->session->set_flashdata('isError', $error_found);
+		if ($error_found){
+			$this->session->set_flashdata('message', $message);
+			redirect(base_url($redirect_url));
+		}
+		$this->session->set_flashdata('message', 'New brand has been inserted');
+		redirect(base_url($redirect_url));
+	}
+
+	private function handleInsertBrand($data){
+		if ($this->MBrand->insert($data) != 1)
+			return false;
+		else
+			return true;
 	}
 
 	public function uploadImage(){

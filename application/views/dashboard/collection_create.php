@@ -49,7 +49,7 @@
                   <div class="x_content">
                     <?php include_once('component_alert.php');?>
                     <br/>
-                    <form id="demo-form2" action="<?=base_url('dashboard/collection/add');?>" data-parsley-validate class="form-horizontal form-label-left" enctype="multipart/form-data" method="post">
+                    <form id="demo-form2" action="<?=base_url('dashboard/collection/create');?>" data-parsley-validate class="form-horizontal form-label-left" enctype="multipart/form-data" method="post">
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="category">Category <span class="required">*</span></label>
                         <div class="col-md-3 col-sm-3 col-xs-12">
@@ -62,7 +62,7 @@
                         </div>
                       </div>
                       <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="is_favorite">Show in Homepage</label>
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="is_favorite">Show</label>
                         <div class="col-md-4 col-sm-4 col-xs-12">
                           <input type="checkbox" class="js-switch" name="is_favorite" id="is_favorite" value="Y"/>
                         </div>
@@ -82,12 +82,12 @@
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12"  for="image">File <span class="required">*</span></label>
                         <div class="col-md-4 col-sm-4 col-xs-12">
-                          <input type="file" class="form-control-file" name="file" required="required"/>
+                          <input type="file" class="form-control-file" name="file" accept=".jpg" required="required"/>
                         </div>
                       </div>
                       <div class="form-group">
-                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                          <button type="submit" class="btn btn-success">Submit</button>
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-sm-offset-3">
+                          <button type="submit" class="btn btn-info" onclick="disable">Submit</button>
                         </div>
                       </div>
                     </form>
@@ -115,6 +115,11 @@
     <script src="<?=base_url();?>assets/vendor/switchery/dist/switchery.min.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="<?=base_url();?>assets/js/custom.min.js"></script>
+    <script type="text/javascript">
+      $('form').submit(function() {
+        $(this).find("button[type='submit']").prop('disabled',true);
+      });
+    </script>
     
   </body>
 </html>

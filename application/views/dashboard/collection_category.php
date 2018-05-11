@@ -41,7 +41,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Category List</h3>
+                <h3>Manage Category</h3>
               </div>
             </div>
             <div class="clearfix"></div>
@@ -49,7 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <span><a title="Add new Category" href="" data-toggle="modal" data-target="#modal-add" id="modal-button"><button type="button" class="btn btn-info"><i class="fa fa-plus"></i>  Add</button></a></span>
+                    <span><a title="Create new Category" href="" data-toggle="modal" data-target="#modal-create" id="modal-button"><button type="button" class="btn btn-info"><i class="fa fa-plus"></i>  New</button></a></span>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
@@ -60,7 +60,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <tr>
                           <th>Category Name</th>
                           <th>Total Picture</th>
-                          <th></th>
+                          <th>Action</th>
                         </tr>
                       </thead>
                       <tbody></tbody>
@@ -75,7 +75,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <?php include_once('component_footer.php');?>
       </div>
     </div>
-    <div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modal-create" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -85,7 +85,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </button>
           </div>
           <div class="modal-body">
-            <form id="form-add-category" data-parsley-validate class="form-horizontal form-label-left" action="<?=base_url('dashboard/collection/category/add');?>" method="post">
+            <form id="form-create-category" data-parsley-validate class="form-horizontal form-label-left" action="<?=base_url('dashboard/collection/category/create');?>" method="post">
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Name <span class="required">*</span></label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
@@ -110,7 +110,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
       </div>
     </div>
-    <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modal-update" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -120,7 +120,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </button>
           </div>
           <div class="modal-body">
-            <form id="form-edit-category" data-parsley-validate class="form-horizontal form-label-left" action="<?=base_url('dashboard/collection/category/edit');?>" method="post">
+            <form id="form-update-category" data-parsley-validate class="form-horizontal form-label-left" action="<?=base_url('dashboard/collection/category/update');?>" method="post">
               <input type="hidden" id="id" name="id" class="form-control col-md-7 col-xs-12">
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Name <span class="required">*</span></label>
@@ -156,14 +156,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </button>
           </div>
           <div class="modal-body">
-            <form id="form-delete-category" data-parsley-validate class="form-horizontal form-label-left" action="<?=base_url('dashboard/collection/category/delete');?>" method="post">
+            <form id="form-delete-category" data-parsley-validate class="form-horizontal form-label-left" method="post">
               <input type="hidden" id="id" name="id" class="form-control col-md-7 col-xs-12">
               <h3></h3>
               <div class="ln_solid"></div>
               <div class="form-group">
                 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                  <button type="submit" class="btn btn-warning">Delete</button>
+                  <button type="submit" class="btn btn-warning">Submit</button>
                 </div>
               </div>
             </form>
@@ -202,37 +202,41 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       $('#datatable-responsive').DataTable({
         "pageLength" : 25,
         "columns": [
-          { "width": "10%", "className": "align-middle"},
+          { "width": "20%", "className": "align-middle"},
           { "width": "5%", "className": "align-middle text-center" },
-          null
+          { "orderable": false, "searchable": false }
         ],
         "ajax": {
             url : '<?=base_url("dashboard/collection/category_list_page");?>',
             type : 'GET'
           },
         });
-      function deleteCategory(id, name) {
+      function update(id, name, description) {
+        $('#form-update-category #id').val(id);
+        $('#form-update-category #name').val(name);
+        $('#form-update-category #description').val(description);
+        $('#modal-update').modal();
+      }
+      function delete_category(id, name) {
+        $('#modal-delete h5').text("Delete Category");
+        $('#form-delete-category').attr("action", '<?=base_url('dashboard/collection/category/delete');?>');
         $("#form-delete-category h3").text("Delete "+name+"?");
         $('#form-delete-category #id').val(id);
         $('#modal-delete').modal();
       }
-      function editCategory(id, name, description) {
-        $('#form-edit-category #id').val(id);
-        $('#form-edit-category #name').val(name);
-        $('#form-edit-category #description').val(description);
-        $('#modal-edit').modal();
+      function showHomepage(id, name){
+        $('#modal-delete h5').text("Set Homepage");
+        $('#form-delete-category').attr("action", '<?=base_url('dashboard/collection/category/homepage');?>');
+        $("#form-delete-category h3").text("Category "+name+" will be showing in the homepage");
+        $('#form-delete-category #id').val(id);
+        $('#modal-delete').modal();
       }
-      function editCategory(id, name, description) {
-        $('#form-edit-category #id').val(id);
-        $('#form-edit-category #name').val(name);
-        $('#form-edit-category #description').val(description);
-        $('#modal-edit').modal();
-      }
-
-      function showHomepage(id){
-        xhttp.open("POST", '<?=base_url("dashboard/collection/category/set_homepage");?>', true);
-        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xhttp.send("fname=Henry&lname=Ford");
+      function showCollection(id, name){
+        $('#modal-delete h5').text("Show Collection");
+        $('#form-delete-category').attr("action", '<?=base_url('dashboard/collection/category/show');?>');
+        $("#form-delete-category h3").text("Show "+name+" in Collection ?");
+        $('#form-delete-category #id').val(id);
+        $('#modal-delete').modal();
       }
     </script>
   </body>

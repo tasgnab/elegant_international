@@ -61,18 +61,23 @@ $route['dashboard/change_password']['get'] = 'dashboard/login/change_password';
 $route['dashboard/change_password']['post'] = 'dashboard/login/do_change_password';
 
 
-$route['dashboard/collection/add']['get'] = 'dashboard/collection/add';
-$route['dashboard/collection/add']['post'] = 'dashboard/collection/do_add';
-$route['dashboard/collection/edit']['post'] = 'dashboard/collection/do_edit';
+$route['dashboard/collection/create']['get'] = 'dashboard/collection/create';
+$route['dashboard/collection/create']['post'] = 'dashboard/collection/do_create';
+$route['dashboard/collection/delete']['post'] = 'dashboard/collection/do_delete';
+$route['dashboard/collection/update']['post'] = 'dashboard/collection/do_update';
 $route['dashboard/collection/favorite']['post'] = 'dashboard/collection/do_favorite';
 $route['dashboard/collection/view/(:any)']['get'] = 'dashboard/collection/view/$1';
 
-$route['dashboard/collection/category/add']['post'] = 'dashboard/collection/do_add_category';
-$route['dashboard/collection/category/edit']['post'] = 'dashboard/collection/do_edit_category';
+$route['dashboard/collection/category/create']['post'] = 'dashboard/collection/do_create_category';
+$route['dashboard/collection/category/update']['post'] = 'dashboard/collection/do_update_category';
 $route['dashboard/collection/category/delete']['post'] = 'dashboard/collection/do_delete_category';
+$route['dashboard/collection/category/homepage']['post'] = 'dashboard/collection/do_homepage';
+$route['dashboard/collection/category/show']['post'] = 'dashboard/collection/do_show';
 
-$route['dashboard/garment/add']['POST'] = 'dashboard/garment/doInsert';
-$route['dashboard/garment/update']['POST'] = 'dashboard/garment/doEditGarment';
+$route['dashboard/garment/brand/create']['post'] = 'dashboard/garment/do_create_brand';
+$route['dashboard/garment/brand/update']['post'] = 'dashboard/garment/do_update_brand';
+$route['dashboard/garment/brand/delete']['post'] = 'dashboard/garment/do_delete_brand';
+$route['dashboard/garment/brand/show']['post'] = 'dashboard/garment/do_show_brand';
 
 
 

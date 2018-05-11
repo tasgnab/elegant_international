@@ -15,13 +15,13 @@ class MCollection extends MY_Model{
 		return $this->db->get('collection',$number,$offset)->result();
 	}
 
-	function insert_collection($data){
+	function create($data){
 		$data = $this->appendCreatedUpdatedBy($data);
 		$this->db->insert('collection',$data);
 		return $this->db->affected_rows();
 	}
 
-	function edit_collection($id,$data){
+	function update($id,$data){
 		$data = $this->appendUpdatedBy($data);
 		$this->db->set($data);
 		$this->db->where('id', $id);
@@ -29,12 +29,13 @@ class MCollection extends MY_Model{
 		return $this->db->affected_rows();
 	}
 
-	function deleteCollection($id){
+	function delete($id){
 		$this->db->where('id', $id);
 		$this->db->delete('collection');
+		return $this->db->affected_rows();
 	}
 
-	function count_collection($where){
+	function count($where){
 		$this->db->from('collection');
 		$this->db->where($where);
 		return $this->db->count_all_results();;
