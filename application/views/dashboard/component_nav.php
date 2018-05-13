@@ -38,7 +38,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</li>
 					<li><a><i class="fa fa-sticky-note"></i> Garment <span class="fa fa-chevron-down"></span></a>
 						<ul class="nav child_menu">
-							<li><a href="<?=base_url('dashboard/garment/brand');?>">View Brands</a></li>
+							<li><a href="<?=base_url('dashboard/garment/brand');?>">Manage Brands </a></li>
 							<li><a href="<?=base_url('dashboard/garment/brand/add');?>">Add New Brand</a></li>
 							<li><a href="<?=base_url('dashboard/garment');?>">View Garments</a></li>
 						</ul>

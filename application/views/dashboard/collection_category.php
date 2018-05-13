@@ -53,18 +53,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <?php include_once('component_alert.php');?>
-                    <br/>
-                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                      <thead>
-                        <tr>
-                          <th>Category Name</th>
-                          <th>Total Picture</th>
-                          <th>Action</th>
-                        </tr>
-                      </thead>
-                      <tbody></tbody>
-                    </table>
+                    <div class="row">
+                      <?php include_once('component_alert.php');?>
+                      <br/>
+                      <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                        <thead>
+                          <tr>
+                            <th>Category Name</th>
+                            <th>Total Picture</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody></tbody>
+                      </table>
+                    </div>
+                    <div class="row">
+                      <div class="footer-left">
+                        <span><i class="fa fa-pencil"></i> edit &nbsp;</span>
+                        <span><i class="fa fa-trash"></i> delete &nbsp;</span>
+                        <span><i class="fa fa-home"></i> set main &nbsp;</span>
+                        <span><i class="fa fa-eye"></i> toggle show &nbsp;</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -40,7 +40,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Category List</h3>
+                <h3>Manage Brand</h3>
               </div>
             </div>
             <div class="clearfix"></div>
@@ -48,21 +48,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <span><a title="Add new Category" href="" data-toggle="modal" data-target="#modal-add" id="modal-button"><button type="button" class="btn btn-info"><i class="fa fa-plus"></i>  Add</button></a></span>
+                    <span><a title="Add new Category" href="" data-toggle="modal" data-target="#modal-create" id="modal-button"><button type="button" class="btn btn-info"><i class="fa fa-plus"></i>  New</button></a></span>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <?php include_once('component_alert.php');?>
-                    <br/>
-                    <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                      <thead>
-                        <tr>
-                          <th>Category Name</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody></tbody>
-                    </table>
+                    <div class="row">
+                      <?php include_once('component_alert.php');?>
+                      <br/>
+                      <table id="datatable-responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                        <thead>
+                          <tr>
+                            <th>Category Name</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody></tbody>
+                      </table>
+                    </div>
+                    <div class="row">
+                      <div class="footer-left">
+                        <span><i class="fa fa-pencil"></i> edit &nbsp;</span>
+                        <span><i class="fa fa-trash"></i> delete &nbsp;</span>
+                        <span><i class="fa fa-plus"></i> add image(s)&nbsp;</span>
+                        <span><i class="fa fa-home"></i> toggle show&nbsp;</span>
+                        <span><i class="fa fa-arrow-right"></i> view image(s)&nbsp;</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -72,7 +83,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <?php include_once('component_footer.php');?>
       </div>
     </div>
-    <div class="modal fade" id="modal-add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modal-create" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -82,11 +93,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </button>
           </div>
           <div class="modal-body">
-            <form id="form-add" data-parsley-validate class="form-horizontal form-label-left" action="<?=base_url('dashboard/garment/brand/add');?>" method="post">
+            <form id="form-create" data-parsley-validate class="form-horizontal form-label-left" action="<?=base_url('dashboard/garment/brand/create');?>" method="post" enctype="multipart/form-data">
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Name <span class="required">*</span></label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" id="name" name="name" required="required" class="form-control col-md-7 col-xs-12">
+                  <input type="text" id="brand" name="brand" required="required" class="form-control col-md-7 col-xs-12">
                 </div>
               </div>
               <div class="form-group">
@@ -101,6 +112,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   <input type="file" class="form-control-file" name="file" required="required"/>
                 </div>
               </div>
+              <div class="ln_solid"></div>
               <div class="form-group">
                 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-sm-offset-3">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -112,7 +124,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
       </div>
     </div>
-    <div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modal-update" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -122,12 +134,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </button>
           </div>
           <div class="modal-body">
-            <form id="form-edit" data-parsley-validate class="form-horizontal form-label-left" action="<?=base_url('dashboard/garment/brand/edit');?>" method="post">
+            <form id="form-update" data-parsley-validate class="form-horizontal form-label-left" action="<?=base_url('dashboard/garment/brand/update');?>" method="post">
               <input type="hidden" id="id" name="id" class="form-control col-md-7 col-xs-12">
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Name <span class="required">*</span></label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" id="name" name="name" required="required" class="form-control col-md-7 col-xs-12">
+                  <input type="text" id="brand" name="brand" required="required" class="form-control col-md-7 col-xs-12">
                 </div>
               </div>
               <div class="form-group">
@@ -138,7 +150,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               </div>
               <div class="ln_solid"></div>
               <div class="form-group">
-                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-sm-offset-3">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                   <button type="submit" class="btn btn-success">Submit</button>
                 </div>
@@ -163,7 +175,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               <h3></h3>
               <div class="ln_solid"></div>
               <div class="form-group">
-                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3 col-sm-offset-3">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                   <button type="submit" class="btn btn-warning">Submit</button>
                 </div>
@@ -205,33 +217,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         "pageLength" : 25,
         "columns": [
           { "width": "10%", "className": "align-middle"},
-          null
+          { "orderable": false, "searchable": false}
         ],
         "ajax": {
             url : '<?=base_url("dashboard/garment/brand_list_page");?>',
             type : 'GET'
           },
         });
-      function update(id, name, description) {
-        $('#form-edit #id').val(id);
-        $('#form-edit #name').val(name);
-        $('#form-edit #description').val(description);
-        $('#modal-edit').modal();
+      function update(id, brand, description) {
+        $('#form-update #id').val(id);
+        $('#form-update #brand').val(brand);
+        $('#form-update #description').val(description);
+        $('#modal-update').modal();
       }
-      function remove(id, name) {
+      function delete_brand(id, name) {
         $('#modal-delete h5').text("Delete Garment Brand");
         $('#form-delete').attr("action", '<?=base_url('dashboard/garment/brand/delete');?>');
-        $("#form-delete h3").text("Delete "+name+"?");
+        $('#form-delete h3').text("Delete "+name+"?");
         $('#form-delete #id').val(id);
         $('#modal-delete').modal();
       }
-      function show(id, name){
+      function show_brand(id, name){
         $('#modal-delete h5').text("Set Homepage");
         $('#form-delete').attr("action", '<?=base_url('dashboard/garment/brand/show');?>');
-        $("#form-delete h3").text("Brand "+name+" will be showing in the homepage");
+        $('#form-delete h3').text("Brand "+name+" will be showing in the homepage");
         $('#form-delete #id').val(id);
         $('#modal-delete').modal();
       }
+      $('form').submit(function() {
+        $(this).find("button[type='submit']").prop('disabled',true);
+      });
     </script>
   </body>
 </html>

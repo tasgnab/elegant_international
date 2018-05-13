@@ -430,11 +430,7 @@ class Collection extends MY_Controller {
 
 		$where['category_id'] = $category;
 		if (!is_null($this->input->get('search'))){
-			$where['title'] = $this->input->get('search');
-		}
-
-		if (!is_null($this->input->get('favorite'))){
-			$where['is_favorite'] = 'Y';
+			$where['title like'] = '%'.$this->input->get('search').'%';
 		}
 
 		$total_rows = $this->MCollection->totalCollection($where);

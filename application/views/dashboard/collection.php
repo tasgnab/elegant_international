@@ -28,10 +28,10 @@
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
-              <div class="title_left"><h3><?php if(isset($category_name)){echo $category_name;} ?> Collection </h3></div>
+              <div class="title_left"><h3><strong><?php if(isset($category_name)){echo $category_name;} ?></strong> Collection </h3></div>
               <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  <form method="GET" action="<?=base_url('dashboard/collection');?>">
+                  <form method="GET" action="<?=base_url('dashboard/collection/view/').$category_id;?>">
                     <div class="input-group">
                       <input id="search" name="search" type="text" class="form-control" placeholder="Search for Collection">
                       <span class="input-group-btn"><button type="submit" class="btn btn-default" type="button">Go!</button></span>
@@ -58,14 +58,14 @@
                     <div class="row">
                       <?php include_once('component_alert.php');?>
                       <?php foreach($collection as $c): ?> 
-                      <div class="col-md-55 <?php if($c->is_favorite=='Y'){echo '';} else { echo 'normal';}?>">
+                      <div class="col-md-55">
                         <div class="<?php if($c->is_favorite=='Y'){echo 'thumbnail border-gold';} else { echo 'thumbnail';}?>">
                           <div class="image view view-first">
                             <input name="category" id="category" type="hidden" value="<?=$c->category_id; ?>">
                             <input name="id" id="id" type="hidden" value="<?=$c->id; ?>">
                             <input name="title" id="title" type="hidden" value="<?=$c->title; ?>">
                             <input name="description" id="description" type="hidden" value="<?=$c->description; ?>">
-                            <img style="width: 100%; height: 200px; display: block;" src="<?=(is_null($c->image)?base_url('assets/img/').'Noimage.png':base_url('upload/collection/').substr($c->image, 0, -4).'_250.jpg');?>" alt="image" onClick="showImage('<?=substr($c->image, 0, -4);?>');"/>
+                            <a><img style="width: 100%; display: block;" src="<?=base_url('upload/collection/').substr($c->image, 0, -4).'_250.jpg';?>" alt="image" onClick="showImage('<?=substr($c->image, 0, -4);?>');" alt="image"/></a>
                             <div class="mask">
                               <div class="tools tools-bottom">
                                 <i class="fa fa-pencil" data-toggle="modal" data-target="#CollectionModalUpdate"></i>
@@ -187,7 +187,6 @@
         </div>
       </div>
     </div>
-
     <!-- jQuery -->
     <script src="<?=base_url();?>assets/vendor/jquery/jquery.min.js"></script>
     <!-- Bootstrap -->
@@ -208,7 +207,6 @@
           dataType: 'json',
           data: {id: id},
           success: function(){
-            
           }
         });
 

@@ -8,9 +8,24 @@ class MBrand extends MY_Model{
 		return $this->db->affected_rows();
 	}
 
-	function all_brand(){
+	function update($id, $data){
+		$data = $this->appendUpdatedBy($data);
+		$this->db->set($data);
+		$this->db->where('id', $id);
+		$this->db->update('brand');
+		return $this->db->affected_rows();
+	}
+
+	function delete($id){
+		$this->db->where('id', $id);
+		$this->db->delete('brand');
+		return $this->db->affected_rows();
+	}
+
+	function get($where){
 		$this->db->select('id,brand,description,image,is_favorite');
 		$this->db->from('brand');
+		$this->db->where($where);
 		$this->db->order_by('brand', 'asc');
 		return $this->db->get();
 	}

@@ -32,11 +32,10 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Add new Garment </h3>
+                <h3>Upload garment image(s) for <strong><?php echo $brand_name; ?></strong> </h3>
               </div>
               <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                  
                 </div>
               </div>
             </div>
@@ -47,19 +46,17 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Brand <strong><?php echo $this->session->userdata('brand'); ?></strong></h2>
+                    <h2>Upload Image(s) </h2>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <form class="dropzone" action="<?=base_url('dashboard/garment/doUploadImage'); ?>" id="myDropzoneContainer" enctype="multipart/form-data">
-                      <div class="dz-message" data-dz-message><span>Click or drop your files here.<br>Recommended aspect ratio 1:1.<br>Max filesize 200 KB.<br>File format '.jpg'</span></div>
-                      <div class="fallback">
-                        <input name="file" type="file">
+                    <form action="" enctype="multipart/form-data">
+                      <input type="hidden" id ="brand_id" name ="brand_id" value="<?=$id;?>" />
+                      <div class="dropzone" id="myDropzoneContainer">
+                        <div class="dz-message" data-dz-message><span>Click or drop your files here.<br>Recommended aspect ratio 1:1.<br>Max filesize 200 KB.<br>File format '.jpg'</span></div>
                       </div>
                     </form>
-                    <div class="ln_solid"></div>
-                    
-                    <a href=""><button style="float: right" type="submit" class="btn btn-success">Next</button></a>
+                    <span><button style="margin-top: 15px; float: right" type="submit" id="submit-all" class="btn btn-success">Submit</button></span>
                     
                   </div>
                 </div>
@@ -85,13 +82,28 @@
     <!-- Custom Theme Scripts -->
     <script src="<?=base_url();?>assets/js/custom.js"></script>
     <script>
-      Dropzone.options.myDropzoneContainer = { 
-        method: "post", 
-        maxFilesize: 1,
-        acceptedFiles: "image/jpeg,image/jpg",
-        parallelUploads: 1,
-        autoProcessQueue: true,
-      };
+      Dropzone.options.myDropzoneContainer = {
+            url: "<?=base_url('dashboard/garment/create');?>",
+            autoProcessQueue: false,
+            uploadMultiple: true,
+            parallelUploads: 10,
+            maxFiles: 10,
+            acceptedFiles: ".jpg",
+
+            init: function () {
+
+                var submitButton = document.querySelector("#submit-all");
+                var wrapperThis = this;
+
+                submitButton.addEventListener("click", function () {
+                    wrapperThis.processQueue();
+                });
+
+                this.on('sendingmultiple', function (data, xhr, formData) {
+                    formData.append("brand_id", $("#brand_id").val());
+                });
+            }
+        };
     </script>
   </body>
 </html>

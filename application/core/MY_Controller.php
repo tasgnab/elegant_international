@@ -55,14 +55,16 @@ class MY_Controller extends CI_Controller {
     $config['new_image'] = $filename.'_'.$height.'.jpg';
     $config['height'] = $height;
     $config['width'] = $width;
-    $dim = (intval($upload_data["image_width"]) / intval($upload_data["image_height"])) - ($config['width'] / $config['height']);
+    $data = getimagesize($targetFile);
+    $dim = (intval($data[0]) / intval($data[1])) - ($config['width'] / $config['height']);
     $config['master_dim'] = ($dim > 0)? "height" : "width";
     $this->image_lib->clear();
     $this->image_lib->initialize($config);
     $this->image_lib->resize();
 
     $config['image_library'] = 'gd2';
-    $config['source_image'] = getcwd().$this->config->item('path_upload_collection').$filename.'_250.jpg';
+    log_message("info", substr($targetFile, 0, strlen($targetFile)-4).'_250.jpg');
+    $config['source_image'] = substr($targetFile, 0, strlen($targetFile)-4).'_250.jpg';
     $config['maintain_ratio'] = FALSE;
     $config['new_image'] = $filename.'_'.$height.'.jpg';
     $config['height'] = $height;

@@ -29,7 +29,7 @@
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
-              <div class="title_left"><h3> Garment </h3></div>
+              <div class="title_left"><h3><strong><?php if(isset($brand_name)){echo $brand_name;} ?></strong> Garment </h3></div>
               <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
                   <form method="GET" action="<?=base_url('dashboard/garment');?>">
@@ -50,43 +50,27 @@
                   <div class="x_title">
                     <h2>Form Wizards <small>Sessions</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
-                      <li><a href="<?=base_url('dashboard/garment?deleted=1');?>"><button class="btn btn-default" type="button"><span><i class="fa fa-trash"></i> &nbsp;Deleted</span></button></a></li>
-                      <li><a href="<?=base_url('dashboard/garment?favorite=1');?>"><button class="btn btn-default" type="button"><span><i class="fa fa-star"></i> &nbsp;Favorite</span></button></a></li>
-                      <li><a href="<?=base_url('dashboard/garment');?>"><button class="btn btn-default" type="button"><span><i class="fa fa-bars"></i> &nbsp;All</span></button></a></li>
-                      <li><a href="<?=base_url('dashboard/garment/add');?>"><button class="btn btn-default" type="button"><span><i class="fa fa-plus"></i> &nbsp;Add</span></button></a></li>
+                      <li><a><button id="showFavorite" class="btn btn-default" type="button"><span><i class="fa fa-star"></i> &nbsp;Favorite</span></button></a></li>
+                      <li><a href="<?=base_url('dashboard/collection/create');?>"><button class="btn btn-default" type="button"><span><i class="fa fa-plus"></i> &nbsp;Add</span></button></a></li>
                     </ul>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
                     <div class="row">
-                      <?php if(!is_null($this->session->flashdata('message'))): ?>
-                      <div class="alert alert-warning alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                        <strong>Sorry!</strong> <?=$this->session->flashdata('message');?>
-                      </div>
-                      <?php endif; ?>
-                      <?php foreach($brand as $b): ?> 
+                      <?php include_once('component_alert.php');?>
+                      <?php foreach($garments as $garment): ?> 
                       <div class="col-md-55">
-                        <div class="<?php if($b->is_favorite==1){echo 'thumbnail border-gold';} else { if($b->is_deleted){echo 'thumbnail border-blue';}else {echo 'thumbnail';}}?>">
+                        <div class="<?php if($garment->is_favorite == 'Y'){echo 'thumbnail border-gold';} else {echo 'thumbnail';};?>">
                           <div class="image view view-first">
-                            <input name="id" id="id" type="hidden" value="<?=$b->id; ?>">
-                            <input name="brand" id="brand" type="hidden" value="<?=$b->brand; ?>">
-                            <input name="description" id="description" type="hidden" value="<?=$b->description; ?>">
-                            <a href="<?=base_url('dashboard/garment?view=detail&id=').$b->id; ?>"><img style="width: 100%; display: block;" src="<?=(is_null($b->filename)?base_url('assets/img/').'Noimage.png':base_url('upload/garment/').substr($b->filename, 0, -4).'_250.jpg');?>" alt="image" /></a>
+                            <input name="id" id="id" type="hidden" value="<?=$garment->id; ?>">
+                            <a><img style="width: 100%; display: block;" src="<?= base_url('upload/garment/').substr($garment->image, 0, -4).'_250.jpg';?>" alt="image" /></a>
                             <div class="mask">
                               <div class="tools tools-bottom">
-                                <i class="fa fa-pencil" data-toggle="modal" data-target="#CollectionModalEdit"></i>
+                                <i class="fa fa-trash"></i>
                                 &nbsp;&nbsp;
-                                <i class="<?php if($b->is_deleted==1){echo 'fa fa-trash color-gold';} else {echo 'fa fa-trash';}?>"></i>
-                                &nbsp;&nbsp;
-                                <i class="<?php if($b->is_favorite==1){echo 'fa fa-star color-gold';} else {echo 'fa fa-star';}?>"></i>
+                                <i class="<?php if($garment->is_favorite=='Y'){echo 'fa fa-star color-gold';} else {echo 'fa fa-star';}?>"></i>
                               </div>
                             </div>
-                          </div>
-                          <div class="caption">
-                            <p><?=$b->brand;?></p>
                           </div>
                         </div>
 
@@ -95,7 +79,6 @@
                     </div>
                     <div class="row">
                       <div class="footer-left">
-                        <span><i class="fa fa-pencil"></i> edit &nbsp;</span>
                         <span><i class="fa fa-trash"></i> delete &nbsp;</span>
                         <span><i class="fa fa-star"></i> toggle favorite</span>
                       </div>

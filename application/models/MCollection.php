@@ -1,4 +1,5 @@
-<?php 
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MCollection extends MY_Model{
 	function totalCollection($where){

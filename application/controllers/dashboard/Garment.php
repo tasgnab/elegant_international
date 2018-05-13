@@ -5,47 +5,12 @@ class Garment extends MY_Controller {
 
 	function  __construct() {
 		parent::__construct();
-		$this->load->model('mgarment');
+		$this->load->model('MGarment');
 		$this->load->model('MBrand');
-		$this->load->library('image_lib');
 	}
 
 	public function index(){
-		$this->handle_not_login();
-
-		if (!is_null($this->input->get('view'))){
-			if ($this->input->get('view')=="detail"){
-				$data['brand'] = $this->mgarment->dataBrandSingle($this->input->get('id'));
-				$data['garment'] = $this->mgarment->dataGarment($this->input->get('id'));
-				$this->load->view('dashboard/garment_detail',$data);
-			} 
-		} else {
-			$where = "";
-			if (!is_null($this->input->get('search'))){
-				$where = "AND garment_brand.brand like '%".$this->input->get('search')."%' ";
-			}
-
-			if (!is_null($this->input->get('favorite'))){
-				$where = "AND garment_brand.is_favorite = 1 ";
-			}
-
-			if (!is_null($this->input->get('deleted'))){
-				$where = "AND garment_brand.is_deleted = 1 ";
-			}
-
-			$total_rows = $this->mgarment->totalBrand($where);
-			if ($total_rows==0){
-				$this->session->set_flashdata('message','No Record found !!!');
-			}
-			$config['base_url'] = base_url().'dashboard/garment';
-			$config['total_rows'] = $total_rows;
-			$config['per_page'] = 20;
-			$from = $this->input->get('per_page');
-			$this->pagination->initialize($config);
-			$data['brand'] = $this->mgarment->dataBrand($config['per_page'],is_null($from) ? 0 : $from, $where);
-			$this->load_view('dashboard/garment',$data);
-		}
-		
+		redirect(base_url('dashboard/garment/brand'));
 	}
 
 	public function brand(){
@@ -60,15 +25,17 @@ class Garment extends MY_Controller {
 		$start = intval($this->input->get("start"));
 		$length = intval($this->input->get("length"));
 
-		$brand = $this->MBrand->all_brand();
+		$brand = $this->MBrand->get('1 = 1');
 		$data = array();
 
 		foreach($brand->result() as $r) {
 			$data[] = array(
 				'<a href="'.base_url('dashboard/collection/view/').$r->id.'">'.$r->brand.'</a>',
 				'<span><a title="Edit" class="btn btn-info" onclick="update(\''.$r->id.'\',\''.$r->brand.'\',\''.$r->description.'\')"><i class="fa fa-pencil"></i></a></span>
-				<span><a title="Delete" class="btn btn-warning" onclick="remove(\''.$r->id.'\',\''.$r->brand.'\')"><i class="fa fa-trash"></i></a></span>
-				<span><a title="Show Homepage" class="btn btn-default '.($r->is_favorite=='Y'?'btn-primary':'').' onclick="show(\''.$r->id.'\',\''.$r->brand.'\')"><i class="fa fa-home"></i></a></span>'
+				<span><a title="Delete" class="btn btn-warning" onclick="delete_brand(\''.$r->id.'\',\''.$r->brand.'\')"><i class="fa fa-trash"></i></a></span>
+				<span><a href="'.base_url('dashboard/garment/create/').$r->id.'" title="Add Image" class="btn btn-default btn-success"><i class="fa fa-plus"></i></a></span>
+				<span><a title="Show Homepage" class="btn btn-default '.($r->is_favorite=='Y'?'btn-primary':'').'" onclick="show_brand(\''.$r->id.'\',\''.$r->brand.'\')"><i class="fa fa-home"></i></a></span>
+				<span><a href="'.base_url('dashboard/garment/view/').$r->id.'" title="View Image" class="btn btn-default btn-success"><i class="fa fa-arrow-right"></i></a></span>'
 			);
 		}
 
@@ -82,12 +49,13 @@ class Garment extends MY_Controller {
 		exit();
 	}
 
-	public function do_add_brand(){
+	public function do_create_brand(){
 		$this->handle_not_login();
-		$error_found = false;  $redirect_url='dashboard/garment/brand/add';
+		$error_found = false; $message = ''; $redirect_url='dashboard/garment/brand';
+
 		if(!$this->input->post('brand')){
 			$error_found = true;
-			$message = "Title cannot be empty";
+			$message = "Brand cannot be empty";
 		}
 
 		if(!$error_found && !$this->input->post('description')){
@@ -100,11 +68,7 @@ class Garment extends MY_Controller {
 			$message = "Image cannot be empty";
 		}
 
-		$this->session->set_flashdata('isError', $error_found);
-	    if ($error_found){
-	      $this->session->set_flashdata('message', $message);
-	      redirect(base_url($redirect_url));
-	    }
+		$this->handle_error($error_found, $message, $redirect_url);
 
 	    $tempFile = $_FILES['file']['tmp_name'];
 		$targetPath = getcwd() . $this->config->item('path_upload_garment');
@@ -113,46 +77,199 @@ class Garment extends MY_Controller {
 		$targetFile = $targetPath . $fileName;
 		move_uploaded_file($tempFile, $targetFile);
 
-		$config['image_library'] = 'gd2';
-		$config['source_image'] = $targetFile;
-		$config['maintain_ratio'] = false;
-		$config['new_image'] = $randomString.'_250.jpg';
-		$config['height'] = 250;
-		$config['width'] = 250;
-		$this->image_lib->initialize($config);
-		$this->image_lib->resize();
+		$this->crop($targetFile, $randomString, 250, 250);
 
-		$data = array(
-			'brand' => $this->input->post('brand'),
-			'description' => $this->input->post('description'),
-			'image' => $fileName
-		);
+		$data['brand'] = $this->input->post('brand');
+		$data['description'] = $this->input->post('description');
+		$data['image'] = $fileName;
 
-		if (!$error_found && !$this->handleInsertBrand($data)) {
+		if (!$error_found && !$this->handleCreateBrand($data)) {
 			$error_found = true;
 			$message = "Failed to insert brand";
 		}
 
-		$this->session->set_flashdata('isError', $error_found);
-		if ($error_found){
-			$this->session->set_flashdata('message', $message);
-			redirect(base_url($redirect_url));
-		}
+		$this->handle_error($error_found, $message, $redirect_url);
 		$this->session->set_flashdata('message', 'New brand has been inserted');
 		redirect(base_url($redirect_url));
 	}
 
-	private function handleInsertBrand($data){
-		if ($this->MBrand->insert($data) != 1)
+	private function handleCreateBrand($data){
+		if ($this->MBrand->create($data) != 1)
 			return false;
 		else
 			return true;
 	}
 
-	public function uploadImage(){
+	public function do_update_brand(){
 		$this->handle_not_login();
-	
-		$this->load_view('dashboard/garment_add_image');	
+		$error_found = false;  $message=''; $redirect_url='dashboard/garment/brand';
+
+		if(!$this->input->post('id')){
+			$error_found = true;
+			$message = "Failed to update brand";
+		}
+
+		if(!$error_found && !$this->input->post('brand')){
+			$error_found = true;
+			$message = "Brand cannot be empty";
+		}
+
+		if(!$error_found && !$this->input->post('description')){
+			$error_found = true;
+			$message = "Description cannot be empty";
+		}
+
+		$this->handle_error($error_found, $message, $redirect_url);
+
+		$id = $this->input->post('id');
+		$data['brand'] = $this->input->post('brand');
+		$data['description'] = $this->input->post('description');
+
+		if (!$error_found && !$this->handleUpdateBrand($id, $data)) {
+			$error_found = true;
+			$message = "Failed to update brand";
+		}
+
+		$this->handle_error($error_found, $message, $redirect_url);
+		$this->session->set_flashdata('message', 'Brand has been updated');
+		redirect(base_url($redirect_url));
+	}
+
+	private function handleUpdateBrand($id, $data){
+		if ($this->MBrand->update($id, $data) != 1)
+			return false;
+		else
+			return true;
+	}
+
+	public function do_delete_brand(){
+		$this->handle_not_login();
+		$error_found = false;  $message=''; $redirect_url='dashboard/garment/brand';
+
+		if(!$this->input->post('id')){
+			$error_found = true;
+			$message = "Failed to delete brand";
+		}
+
+		$this->handle_error($error_found, $message, $redirect_url);
+
+		if (!$error_found && !$this->handleDeleteBrand($this->input->post('id'))) {
+			$error_found = true;
+			$message = "Failed to delete brand";
+		}
+
+		$this->handle_error($error_found, $message, $redirect_url);
+		$this->session->set_flashdata('message', 'Brand has been deleted');
+		redirect(base_url($redirect_url));
+	}
+
+	private function handleDeleteBrand($id){
+		if ($this->MBrand->delete($id) != 1)
+			return false;
+		else
+			return true;
+	}
+
+	public function do_show_brand(){
+		$this->handle_not_login();
+		$error_found = false;  $message=''; $redirect_url='dashboard/garment/brand';
+
+		if(!$this->input->post('id')){
+			$error_found = true;
+			$message = "Failed to update brand";
+		}
+
+		$this->handle_error($error_found, $message, $redirect_url);
+
+		$id = $this->input->post('id');
+		if ($this->isFavorite($id)) {
+			$data['is_favorite'] = 'N';
+		} else {
+			$data['is_favorite'] = 'Y';
+		}
+
+		if (!$error_found && !$this->handleUpdateBrand($id, $data)) {
+			$error_found = true;
+			$message = "Failed to update brand";
+		}
+
+		$this->handle_error($error_found, $message, $redirect_url);
+		$this->session->set_flashdata('message', 'Brand has been updated');
+		redirect(base_url($redirect_url));
+	}
+
+	public function view($brand){
+		$this->handle_not_login();
+
+		$where['brand_id'] = $brand;
+		if (!is_null($this->input->get('search'))){
+			$where['title like'] = '%'.$this->input->get('search').'%';
+		}
+
+		$total_rows = $this->MGarment->totalGarment($where);
+		$config['base_url'] = base_url().'dashboard/collection/view/'.$brand;
+		$config['total_rows'] = $total_rows;
+		$config['per_page'] = 10;
+		$from = $this->input->get('per_page');
+
+		$this->pagination->initialize($config);
+		$data['garments'] = $this->MGarment->allGarment($config['per_page'],is_null($from) ? 0 : $from, $where);
+		$data['brand_name'] = $this->getBrandName(array('id' => $brand));
+		$data['brand_id'] = $brand;
+		$this->load_view('dashboard/garment',$data);
+	}
+
+	private function isFavorite($id){
+		$data['id'] = $id;
+		$data['is_favorite'] = 'Y';
+		if ($this->MBrand->get($data)->num_rows() > 0)
+			return true;
+		else
+			return false;
+	}
+
+	public function create($brand_id){
+		$this->handle_not_login();
+		$data['id'] = $brand_id;
+		$data['brand_name'] =  $this->getBrandName($data);
+
+		$this->load_view('dashboard/garment_add_image', $data);	
+	}
+
+	private function getBrandName($where){
+		$row = $this->MBrand->get($where)->row();
+		return $row->brand;
+	}
+
+	public function do_create(){
+		$this->handle_not_login();
+		if (!$this->input->is_ajax_request()) {
+            exit('No direct script access allowed');
+        }
+		if (!empty($_FILES)) {
+			for($i = 0; $i < count($_FILES['file']['name']); $i++){
+				$tempFile = $_FILES['file']['tmp_name'][$i];
+				$targetPath = getcwd() . $this->config->item('path_upload_garment');
+				$randomString = random_string('alnum', 8);
+				$fileName = $randomString . '.jpg';
+				$targetFile = $targetPath . $fileName;
+				move_uploaded_file($tempFile, $targetFile);
+
+				$this->crop($targetFile, $randomString, 250, 250);
+				$data['image'] = $fileName;
+				$data['brand_id'] = $this->input->post('brand_id');
+				$this->handleCreate($data);
+			}
+			
+		}
+		exit();
+	}
+
+	private function handleCreate($data){
+		if ($this->MGarment->create($data) != 1)
+			return false;
+		else
+			return true;
 	}
 
 	public function doInsert(){
@@ -174,7 +291,6 @@ class Garment extends MY_Controller {
 		$this->session->set_userdata('brandId',$brandId);
 		$this->session->set_userdata('listImage',$listImage);
 		redirect('dashboard/garment/add');
-	
 	}
 
 	public function doUploadImage(){

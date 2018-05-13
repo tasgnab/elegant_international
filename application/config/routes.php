@@ -74,6 +74,11 @@ $route['dashboard/collection/category/delete']['post'] = 'dashboard/collection/d
 $route['dashboard/collection/category/homepage']['post'] = 'dashboard/collection/do_homepage';
 $route['dashboard/collection/category/show']['post'] = 'dashboard/collection/do_show';
 
+$route['dashboard/garment/create/(:any)']['get'] = 'dashboard/garment/create/$1';
+$route['dashboard/garment/create']['post'] = 'dashboard/garment/do_create';
+$route['dashboard/garment/view/(:any)']['get'] = 'dashboard/garment/view/$1';
+
+
 $route['dashboard/garment/brand/create']['post'] = 'dashboard/garment/do_create_brand';
 $route['dashboard/garment/brand/update']['post'] = 'dashboard/garment/do_update_brand';
 $route['dashboard/garment/brand/delete']['post'] = 'dashboard/garment/do_delete_brand';

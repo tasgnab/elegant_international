@@ -1,6 +1,31 @@
 <?php 
 
-class MGarment extends CI_Model{
+class MGarment extends MY_Model{
+
+	function totalGarment($where){
+		$this->db->select('id,image,is_favorite');
+		$this->db->where($where);
+		$this->db->order_by('id', 'asc');
+		return $this->db->get('garment')->num_rows();
+	}
+
+	function allGarment($number,$offset,$where){
+		$this->db->select('id,image,is_favorite');
+		$this->db->where($where);
+		$this->db->order_by('id', 'asc');
+		return $this->db->get('garment',$number,$offset)->result();
+	}
+
+	function create($data){
+		$data = $this->appendCreatedUpdatedBy($data);
+		$this->db->insert('garment', $data);
+		return $this->db->affected_rows();
+	}
+
+	function get($where){
+		$this->db->where($where);
+		$result = $this->db->get('garment');
+	}
 
 	function isFavorite($id){
 		$this->db->select('is_favorite');
@@ -84,20 +109,6 @@ class MGarment extends CI_Model{
 	function deleteGarment($id){
 		$this->db->where('id', $id);
 		$this->db->delete('garment');
-	}
-
-	function allGarment(){
-		$this->db->select('garment.id,garment.code,garment_brand.brand,garment.filename,garment.stock');
-		$this->db->from('garment');
-		$this->db->join('garment_brand','garment.brand=garment_brand.id');
-		$this->db->where(
-			array(
-				'garment_brand.is_deleted' => 0,
-				'garment.is_deleted' => 0
-				)
-			);
-		$this->db->order_by('brand,code', 'asc');
-		return $this->db->get()->result();
 	}
 
 }
