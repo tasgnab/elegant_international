@@ -433,7 +433,7 @@ class Collection extends MY_Controller {
 			$where['title like'] = '%'.$this->input->get('search').'%';
 		}
 
-		$total_rows = $this->MCollection->totalCollection($where);
+		$total_rows = $this->MCollection->get($where)->num_rows();
 		$config['base_url'] = base_url().'dashboard/collection/view/'.$category;
 		$config['total_rows'] = $total_rows;
 		$config['per_page'] = 10;

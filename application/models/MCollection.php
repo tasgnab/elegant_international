@@ -36,6 +36,14 @@ class MCollection extends MY_Model{
 		return $this->db->affected_rows();
 	}
 
+	function get($where){
+		$this->db->select('id,title,description,image,is_favorite,category_id');
+		$this->db->from('collection');
+		$this->db->where($where);
+		$this->db->order_by('title', 'asc');
+		return $this->db->get();
+	}
+
 	function count($where){
 		$this->db->from('collection');
 		$this->db->where($where);

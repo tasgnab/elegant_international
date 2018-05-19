@@ -205,7 +205,7 @@ class Garment extends MY_Controller {
 			$where['title like'] = '%'.$this->input->get('search').'%';
 		}
 
-		$total_rows = $this->MGarment->totalGarment($where);
+		$total_rows = $this->MGarment->get($where)->num_rows();
 		$config['base_url'] = base_url().'dashboard/collection/view/'.$brand;
 		$config['total_rows'] = $total_rows;
 		$config['per_page'] = 10;
