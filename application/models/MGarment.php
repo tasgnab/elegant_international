@@ -23,26 +23,25 @@ class MGarment extends MY_Model{
 	}
 
 	function get($where){
+		$this->db->select('id,brand_id,image,is_favorite');
+		$this->db->from('garment');
 		$this->db->where($where);
-		$result = $this->db->get('garment');
+		$this->db->order_by('id asc');
+		return $this->db->get();
 	}
 
-	function isFavorite($id){
-		$this->db->select('is_favorite');
-		$this->db->where('id',$id);
-
-		$result = $this->db->get('garment_brand')->row();
-		if($result->is_favorite==1)
-			return true;
-		else
-			return false;
-	}
-
-	function updateBrand($id,$data){
-		$data['updated_by'] = $this->session->userdata('username');
+	function update($id,$data){
+		$data = $this->appendUpdatedBy($data);
 		$this->db->set($data);
 		$this->db->where('id', $id);
-		$this->db->update('garment_brand');
+		$this->db->update('garment');
+		return $this->db->affected_rows();
+	}
+
+	function delete($id){
+		$this->db->where('id', $id);
+		$this->db->delete('garment');
+		return $this->db->affected_rows();
 	}
 
 	function insertBrand($data){

@@ -3,6 +3,7 @@ class MY_Controller extends CI_Controller {
   function __construct(){
     parent::__construct();
     $this->load->model('MCategory');
+    $this->load->model('MBrand');
   }
 
   function is_login(){
@@ -34,6 +35,7 @@ class MY_Controller extends CI_Controller {
 
   function load_view($view_path, $data=array()){
     $data['categories'] = $this->MCategory->get('1=1');
+    $data['brands'] = $this->MBrand->get('1=1');
     $this->load->view($view_path,$data);
   }
 

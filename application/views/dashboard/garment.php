@@ -51,7 +51,7 @@
                     <h2>Form Wizards <small>Sessions</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a><button id="showFavorite" class="btn btn-default" type="button"><span><i class="fa fa-star"></i> &nbsp;Favorite</span></button></a></li>
-                      <li><a href="<?=base_url('dashboard/collection/create');?>"><button class="btn btn-default" type="button"><span><i class="fa fa-plus"></i> &nbsp;Add</span></button></a></li>
+                      <li><a href="<?=base_url('dashboard/garment/create/').$brand_id;?>"><button class="btn btn-default" type="button"><span><i class="fa fa-plus"></i> &nbsp;Add</span></button></a></li>
                     </ul>
                     <div class="clearfix"></div>
                   </div>
@@ -98,77 +98,25 @@
       </div>
     </div>
 
-    <div id="CollectionModalEdit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div id="GarmentModalDelete" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h4 class="modal-title" id="myModalLabel">Update Brand</h4>
+            <h4 class="modal-title" id="myModalLabel">Delete Garment Image</h4>
           </div>
           <div class="modal-body">
-            <div id="testmodal" style="padding: 5px 20px;">
-              <form id="collectionEdit" class="form-horizontal" role="form">
-                <input type="hidden" class="form-control" id="id" name="id">
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">Brand</label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control" id="brand" name="brand">
+            <p>Delete this Image?</p>
+            <form id="garmentDelete" class="form-horizontal" role="form" action="<?=base_url('dashboard/garment/delete');?>" method="post">
+              <input type="hidden" class="form-control" id="id" name="id">
+              <input type="hidden" class="form-control" id="redirect_url" name="redirect_url" value="<?=$brand_id;?>">
+              <div class="form-group">
+                  <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                    <button type="button" class="btn btn-default antoclose" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Submit</button>
                   </div>
                 </div>
-                <div class="form-group">
-                  <label class="col-sm-3 control-label">Description</label>
-                  <div class="col-sm-9">
-                    <textarea class="form-control" style="height:55px;" id="description" name="description"></textarea>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default antoclose" data-dismiss="modal">Close</button>
-            <button id="collectionEditButton" type="button" class="btn btn-primary antosubmit">Save changes</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="CollectionModalDelete" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h4 class="modal-title" id="myModalLabel">Delete Collection</h4>
-          </div>
-          <div class="modal-body">
-            <p>Delete this Collection?</p>
-            <form id="collectionDelete" class="form-horizontal" role="form">
-              <input type="hidden" class="form-control" id="id" name="id">
             </form>  
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default antoclose" data-dismiss="modal">Close</button>
-            <button id="collectionDeleteButton" type="button" class="btn btn-primary antosubmit">Delete</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="CollectionModalUnDelete" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h4 class="modal-title" id="myModalLabel">Delete Collection</h4>
-          </div>
-          <div class="modal-body">
-            <p>Restore this Collection?</p>
-            <form id="collectionDelete" class="form-horizontal" role="form">
-              <input type="hidden" class="form-control" id="id" name="id">
-            </form>  
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default antoclose" data-dismiss="modal">Close</button>
-            <button id="collectionUnDeleteButton" type="button" class="btn btn-primary antosubmit">Save changes</button>
           </div>
         </div>
       </div>
@@ -190,7 +138,7 @@
         var id = $(this).closest($('.thumbnail')).find($('input#id')).attr('value');
         $.ajax({
           type: "POST",
-          url: "<?=base_url('dashboard/garment/doFavorite');?>", 
+          url: "<?=base_url('dashboard/garment/favorite');?>", 
           dataType: 'json',
           data: {id: id},
           success: function(){
@@ -203,78 +151,11 @@
         $(this).closest($('.thumbnail')).removeClass('border-blue');
       });
 
-      $(".thumbnail .fa-pencil").click(function(){
-        var id = $(this).closest($('.thumbnail')).find($('input#id')).attr('value');
-        var brand = $(this).closest($('.thumbnail')).find($('input#brand')).attr('value');
-        var description = $(this).closest($('.thumbnail')).find($('input#description')).attr('value');
-        $('#CollectionModalEdit').find('input#id').val(id);
-        $('#CollectionModalEdit').find('input#brand').val(brand);
-        $('#CollectionModalEdit').find('textarea#description').val(description);
-        
-      });
-
-      $('#collectionEditButton').click(function(e) {
-        e.preventDefault();
-        var id = $('#CollectionModalEdit').find('input#id').val();
-        var brand = $('#CollectionModalEdit').find('input#brand').val();
-        var description = $('#CollectionModalEdit').find('textarea#description').val();
-        $('#CollectionModalEdit').modal('toggle');
-        $.ajax({
-          type: "POST",
-          url: "<?=base_url('dashboard/garment/doEdit');?>", 
-          dataType: 'json',
-          data: {id: id, brand: brand, description: description},
-          success: function(){
-            
-          }
-        });
-      });
-
       $(".thumbnail .fa-trash").click(function(e){
         e.preventDefault();
         var id = $(this).closest($('.thumbnail')).find($('input#id')).attr('value');
-        if ($(this).hasClass('color-gold')){
-          $('#CollectionModalUnDelete').modal('toggle');
-          $('#CollectionModalUnDelete').find('input#id').val(id);
-        } else {
-          $('#CollectionModalDelete').modal('toggle');
-          $('#CollectionModalDelete').find('input#id').val(id);
-        }
-      });
-
-      $('#collectionDeleteButton').click(function(e) {
-        e.preventDefault();
-        var id = $('#CollectionModalDelete').find('input#id').val();
-        $('#CollectionModalDelete').modal('toggle');
-        $.ajax({
-          type: "POST",
-          url: "<?=base_url('dashboard/garment/doDelete');?>", 
-          dataType: 'json',
-          data: {id: id},
-          success: function(){
-            
-          }
-        });
-        $('.x_content .row').find('input#id[value="'+id+'"]').closest($('.thumbnail')).toggleClass('border-blue');
-        $('.x_content .row').find('input#id[value="'+id+'"]').closest($('.thumbnail')).find($('.fa-trash')).toggleClass('color-gold');
-        $('.x_content .row').find('input#id[value="'+id+'"]').closest($('.thumbnail')).find($('.fa-star')).toggleClass('color-gold');
-      });
-
-      $('#collectionUnDeleteButton').click(function(e) {
-        e.preventDefault();
-        var id = $('#CollectionModalUnDelete').find('input#id').val();
-        $('#CollectionModalUnDelete').modal('toggle');
-        $.ajax({
-          type: "POST",
-          url: "<?=base_url('dashboard/garment/doRestore');?>", 
-          dataType: 'json',
-          data: {id: id},
-          success: function(){
-          }
-        });
-        $('.x_content .row').find('input#id[value="'+id+'"]').closest($('.thumbnail')).toggleClass('border-blue');
-        $('.x_content .row').find('input#id[value="'+id+'"]').closest($('.thumbnail')).find($('.fa-trash')).toggleClass('color-gold');
-        $('.x_content .row').find('input#id[value="'+id+'"]').closest($('.thumbnail')).find($('.fa-star')).toggleClass('color-gold');
+        $('#GarmentModalDelete').find('input#id').val(id);
+        $('#GarmentModalDelete').modal('toggle');
       });
     </script>
   </body>

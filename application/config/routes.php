@@ -77,6 +77,8 @@ $route['dashboard/collection/category/show']['post'] = 'dashboard/collection/do_
 $route['dashboard/garment/create/(:any)']['get'] = 'dashboard/garment/create/$1';
 $route['dashboard/garment/create']['post'] = 'dashboard/garment/do_create';
 $route['dashboard/garment/view/(:any)']['get'] = 'dashboard/garment/view/$1';
+$route['dashboard/garment/favorite']['post'] = 'dashboard/garment/do_favorite';
+$route['dashboard/garment/delete']['post'] = 'dashboard/garment/do_delete';
 
 
 $route['dashboard/garment/brand/create']['post'] = 'dashboard/garment/do_create_brand';

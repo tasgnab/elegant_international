@@ -6,7 +6,6 @@ class Garment extends MY_Controller {
 	function  __construct() {
 		parent::__construct();
 		$this->load->model('MGarment');
-		$this->load->model('MBrand');
 	}
 
 	public function index(){
@@ -30,7 +29,7 @@ class Garment extends MY_Controller {
 
 		foreach($brand->result() as $r) {
 			$data[] = array(
-				'<a href="'.base_url('dashboard/collection/view/').$r->id.'">'.$r->brand.'</a>',
+				'<a href="'.base_url('dashboard/garment/view/').$r->id.'">'.$r->brand.'</a>',
 				'<span><a title="Edit" class="btn btn-info" onclick="update(\''.$r->id.'\',\''.$r->brand.'\',\''.$r->description.'\')"><i class="fa fa-pencil"></i></a></span>
 				<span><a title="Delete" class="btn btn-warning" onclick="delete_brand(\''.$r->id.'\',\''.$r->brand.'\')"><i class="fa fa-trash"></i></a></span>
 				<span><a href="'.base_url('dashboard/garment/create/').$r->id.'" title="Add Image" class="btn btn-default btn-success"><i class="fa fa-plus"></i></a></span>
@@ -182,7 +181,7 @@ class Garment extends MY_Controller {
 		$this->handle_error($error_found, $message, $redirect_url);
 
 		$id = $this->input->post('id');
-		if ($this->isFavorite($id)) {
+		if ($this->isFavoriteBrand($id)) {
 			$data['is_favorite'] = 'N';
 		} else {
 			$data['is_favorite'] = 'Y';
@@ -219,7 +218,7 @@ class Garment extends MY_Controller {
 		$this->load_view('dashboard/garment',$data);
 	}
 
-	private function isFavorite($id){
+	private function isFavoriteBrand($id){
 		$data['id'] = $id;
 		$data['is_favorite'] = 'Y';
 		if ($this->MBrand->get($data)->num_rows() > 0)
@@ -272,86 +271,63 @@ class Garment extends MY_Controller {
 			return true;
 	}
 
-	public function doInsert(){
+	public function do_favorite(){
 		$this->handle_not_login();
 
-		$brand = $this->input->post('brand');
-		$description = $this->input->post('description');
+		$id = $this->input->post('id');
 
-		$data = array(
-			'brand' => $brand,
-			'description' => $description
-		);
-
-		$brandId = $this->mgarment->insertBrand($data);
-
-		$listImage = array();
-		$this->session->set_userdata('step',2);
-		$this->session->set_userdata('brand',$brand);
-		$this->session->set_userdata('brandId',$brandId);
-		$this->session->set_userdata('listImage',$listImage);
-		redirect('dashboard/garment/add');
-	}
-
-	public function doUploadImage(){
-		$this->handle_not_login();
-
-		if (!empty($_FILES)) {
-			$tempFile = $_FILES['file']['tmp_name'];
-			$oriFilename = $_FILES['file']['name'];
-			$targetPath = getcwd() . '/upload/garment/';
-			$randomString = random_string('alnum', 8);
-			$fileName = $randomString . '.jpg';
-			$targetFile = $targetPath . $fileName;
-			move_uploaded_file($tempFile, $targetFile);
-			$str = explode(".",$oriFilename);
-
-			$config['image_library'] = 'gd2';
-			$config['source_image'] = $targetFile;
-			$config['maintain_ratio'] = TRUE;
-			$config['new_image'] = $randomString.'_250'.'.jpg';
-			$config['width']	= 250;
-			$config['height']	= 250;
-
-			$this->image_lib->initialize($config);
-			$this->image_lib->resize();
-			if ($this->session->has_userdata('listImage')){
-				$data = array(
-					'code' => $str[0],
-					'brand' => $this->session->userdata('brandId'),
-					'filename' => $fileName
-				);
-				$listImage = $this->session->userdata('listImage');
-				$listImage[] = $this->mgarment->insertGarment($data);
-				$this->session->set_userdata('listImage',$listImage);
-			}
-			$this->session->set_userdata('step',3);
+		if ($this->isFavorite($id)) {
+			$data['is_favorite'] = 'N';
+		} else {
+			$data['is_favorite'] = 'Y';
 		}
+
+		$this->handleUpdate($id, $data);
+		exit();
 	}
 
-	public function finish(){
+	private function isFavorite($id){
+		$where['id'] = $id;
+		$where['is_favorite'] = 'Y';
+		if ($this->MGarment->get($where)->num_rows() > 0)
+			return true;
+		else
+			return false;
+	}
+
+	private function handleUpdate($id, $data){
+		if ($this->MGarment->update($id, $data) != 1)
+			return false;
+		else 
+			return true;
+	}
+
+	public function do_delete(){
 		$this->handle_not_login();
+		$error_found = false;  $message=''; $redirect_url='dashboard/garment/view/'.$this->input->post('redirect_url');
 
-		$this->mgarment->insertBrand(
-			array(
-				'brand' => $this->input->post('brand'),
-				'description' => $this->input->post('description')
-				)
-			);
-		$this->session->set_flashdata('message', 'New Brand has been inserted.');
-		redirect('dashboard/garment/add');
+		if(!$this->input->post('id')){
+			$error_found = true;
+			$message = "Failed to delete image";
+		}
+
+		$this->handle_error($error_found, $message, $redirect_url);
+		$id = $this->input->post('id');
+		if (!$error_found && !$this->handleDelete($id)) {
+			$error_found = true;
+			$message = "Failed to delete image";
+		}
+		
+		$this->handle_error($error_found, $message, $redirect_url);
+		$this->session->set_flashdata('message', 'Image has been deleted');
+		redirect(base_url($redirect_url));
 	}
 
-	public function doFinish(){
-		if (!$this->is_login())
-			redirect(base_url('dashboard/login'));
-
-		$this->session->unset_userdata('step');
-		$this->session->unset_userdata('listImage');
-		$this->session->unset_userdata('brand');
-		$this->session->unset_userdata('brandId');
-		redirect('dashboard/garment/add');
-
+	private function handleDelete($id){
+		if ($this->MGarment->delete($id) != 1)
+			return false;
+		else
+			return true;
 	}
 
 	public function doFavorite(){
