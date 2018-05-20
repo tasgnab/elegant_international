@@ -1,60 +1,32 @@
 	<section id="gallery" class="content-section text-center">
-		<div class="container-fluid">
-			<div class="accordian">
-				<ul>
-					<?php foreach ($collection as $c): ?>
-					<li>
-						<div class="image_title">
-							<a class="text-left" data-toggle="modal" data-target="#myModal"><?=$c->title;?></a>
-							<p><?=$c->description;?></p>
-						</div>
-						<div>
-							<img src="<?=(is_null($c->image)?base_url('assets/img/').'Noimage.png':base_url('upload/collection/').$c->image);?>"/>
-						</div>
-					</li>
-					<?php endforeach; ?>
-				</ul>
+		<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+		  <div class="carousel-inner">
+		  	<?php $first = true; ?>
+		  	<?php foreach ($collection as $c): ?>
+		    <div style="max-height: 600px;" class="carousel-item <?=$first?'active':'';?>">
+		      <img style="max-height: 600px;" class="d-block" src="<?=base_url('upload/collection/').substr($c->image, 0,-4).'_900.jpg';?>" alt="First slide">
+		      <div class="carousel-caption d-none d-md-block">
+			    <h5>...</h5>
+			    <p>...</p>
+			  </div>
+		    </div>
+		    <?php $first=false;?>
+		    <?php endforeach; ?>
+		  </div>
+		  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+		    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		    <span class="sr-only">Previous</span>
+		  </a>
+		  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+		    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+		    <span class="sr-only">Next</span>
+		  </a>
+		</div>
+		<div style="padding-top: 20px;" class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<a href="#" class="btn btn-default btn-lg"><span class="network-name">Check Other Collection</span></a>
+				</div>
 			</div>
 		</div>
 	</section>
-	<!-- Modal -->
-	<div class="portfolio-modal modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
-		<div class="modal-content">
-			<div class="close-modal" data-dismiss="modal">
-				<div class="lr">
-					<div class="rl">
-					</div>
-				</div>
-			</div>
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-8 col-lg-offset-2">
-						<div class="modal-body">
-							<h2>Project Title</h2>
-							<hr class="star-primary">
-							<img src="<?=base_url()?>upload/1.jpg" class="img-responsive img-centered" alt="">
-							<p>Lorem ipsum dolor sit amet, qui fugit audiam intellegat in. Eum illud option qualisque an, tota bonorum ius id. Id mei percipit sapientem honestatis, tale novum vivendum mel ei, eu graeco corrumpit intellegebat sea. Sed soleat iudicabit sententiae ad, vel causae aliquip ne, vidisse admodum vis ei.</p>
-							<br/>
-							<img src="<?=base_url()?>upload/1.jpg" class="img-responsive img-centered" alt="">
-							<p>Lorem ipsum dolor sit amet, qui fugit audiam intellegat in. Eum illud option qualisque an, tota bonorum ius id. Id mei percipit sapientem honestatis, tale novum vivendum mel ei, eu graeco corrumpit intellegebat sea. Sed soleat iudicabit sententiae ad, vel causae aliquip ne, vidisse admodum vis ei.</p>
-							<!-- <ul class="list-inline item-details">
-								<li>Client:
-									<strong><a href="http://startbootstrap.com">Start Bootstrap</a>
-									</strong>
-								</li>
-								<li>Date:
-									<strong><a href="http://startbootstrap.com">April 2014</a>
-									</strong>
-								</li>
-								<li>Service:
-									<strong><a href="http://startbootstrap.com">Web Development</a>
-									</strong>
-								</li>
-							</ul> -->
-							<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>

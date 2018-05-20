@@ -54,7 +54,7 @@ class Collection extends MY_Controller {
 		$targetFile = $targetPath . $fileName;
 		move_uploaded_file($tempFile, $targetFile);
 
-		$this->resize($targetFile, $randomString, 'height', 1024);
+		$this->crop($targetFile, $randomString, 900, 1600);
 
 		$this->crop($targetFile, $randomString, 250, 250);
 

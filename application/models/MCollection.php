@@ -49,5 +49,9 @@ class MCollection extends MY_Model{
 		$this->db->where($where);
 		return $this->db->count_all_results();;
 	}
+
+	function get_homepage(){
+		return $this->db->get('collection_homepage');
+	}
 }
 ?>

@@ -65,7 +65,7 @@
                             <input name="id" id="id" type="hidden" value="<?=$c->id; ?>">
                             <input name="title" id="title" type="hidden" value="<?=$c->title; ?>">
                             <input name="description" id="description" type="hidden" value="<?=$c->description; ?>">
-                            <a><img style="width: 100%; display: block;" src="<?=base_url('upload/collection/').substr($c->image, 0, -4).'_250.jpg';?>" alt="image" onClick="showImage('<?=substr($c->image, 0, -4);?>');" alt="image"/></a>
+                            <a><img style="width: 100%; display: block;" src="<?=base_url('upload/collection/').substr($c->image, 0, -4).'_250.jpg';?>" alt="image" onClick="showImage('<?=$c->image;?>');" alt="image"/></a>
                             <div class="mask">
                               <div class="tools tools-bottom">
                                 <i class="fa fa-pencil" data-toggle="modal" data-target="#CollectionModalUpdate"></i>
@@ -242,7 +242,7 @@
       })
 
       function showImage(filename){
-        $('#CollectionModalShow').find('img').attr('src',"<?=base_url('upload/collection/');?>"+filename+"_1024.jpg");
+        $('#CollectionModalShow').find('img').attr('src',"<?=base_url('upload/collection/');?>"+filename);
         $('#CollectionModalShow').modal('toggle');
       }
 

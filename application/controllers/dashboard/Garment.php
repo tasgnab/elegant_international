@@ -259,9 +259,8 @@ class Garment extends MY_Controller {
 				$data['brand_id'] = $this->input->post('brand_id');
 				$this->handleCreate($data);
 			}
-			
+			redirect(base_url('dashboard/garment/view/'.$data['brand_id']));
 		}
-		exit();
 	}
 
 	private function handleCreate($data){

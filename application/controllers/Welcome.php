@@ -21,14 +21,20 @@ class Welcome extends MY_Controller {
 
 	function  __construct() {
 		parent::__construct();
-		$this->load->model('mgarment');
-		$this->load->model('mcollection');
+		$this->load->model('MGarment');
+		$this->load->model('MCollection');
 	}
 
 	public function index(){
-		$where = "AND garment_brand.is_favorite = 1 ";
-		$data['brand'] = $this->mgarment->dataBrand(8, 0, $where);
-		$data['collection'] = $this->mcollection->allCollection(8, 0, array('is_favorite' => 1));
+		$data['brand'] = $this->MBrand->get(array('is_favorite' => 'Y'))->result();
+		$garment = array();
+		foreach ($data['brand'] as $brand) {
+			$where['brand_id'] = $brand->id;
+			$where['is_favorite'] = 'Y';
+			$garment[$brand->id] = $this->MGarment->get($where)->result();
+		}
+		$data['garment'] = $garment;
+		$data['collection'] = $this->MCollection->get_homepage()->result();
 		$this->load->view('landing/main',$data);
 	}
 }

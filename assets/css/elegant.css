@@ -10,6 +10,11 @@
     font-size: 26px;
   }
 }
+
+.carousel-inner > .carousel-item > img {
+    margin: 0 auto;
+}
+
 footer{
 	padding: 50px 0 0
 }

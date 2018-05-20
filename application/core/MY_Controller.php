@@ -65,8 +65,7 @@ class MY_Controller extends CI_Controller {
     $this->image_lib->resize();
 
     $config['image_library'] = 'gd2';
-    log_message("info", substr($targetFile, 0, strlen($targetFile)-4).'_250.jpg');
-    $config['source_image'] = substr($targetFile, 0, strlen($targetFile)-4).'_250.jpg';
+    $config['source_image'] = substr($targetFile, 0, strlen($targetFile)-4).'_'.$height.'.jpg';
     $config['maintain_ratio'] = FALSE;
     $config['new_image'] = $filename.'_'.$height.'.jpg';
     $config['height'] = $height;
