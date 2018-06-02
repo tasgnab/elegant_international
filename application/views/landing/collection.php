@@ -27,7 +27,7 @@
 	<?php include_once('nav.php'); ?>
 	<section id="gallery" class="content-section text-center" style="margin-top: 30px;">
 		<?php foreach($category as $cat): ?>
-			<div>
+			<div class="container-fluid" style="margin-bottom: 50px;">
 		<div id="carousel-<?=$cat->id;?>" class="carousel slide" data-ride="carousel">
 		  <ol class="carousel-indicators">
 		  	<?php $first = true;?>
