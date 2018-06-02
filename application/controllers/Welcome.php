@@ -37,4 +37,18 @@ class Welcome extends MY_Controller {
 		$data['collection'] = $this->MCollection->get_homepage()->result();
 		$this->load->view('landing/main',$data);
 	}
+
+	public function collection(){
+		$where['show_collection'] = 'Y';
+		$data['category'] = $this->MCategory->get($where)->result();
+		$collection = array();
+		$where = array_values($where);
+		foreach($data['category'] as $category){
+			$where['category_id'] = $category->id;
+			$where['is_favorite'] = 'Y';
+			$collection[$category->id] = $this->MCollection->get($where)->result();
+		}
+		$data['collection'] = $collection;
+		$this->load->view('landing/collection',$data);
+	}
 }

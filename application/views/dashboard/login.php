@@ -59,5 +59,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script src="<?=base_url();?>assets/vendor/jquery/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="<?=base_url();?>assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $( document ).ready(function() {
+          $('#username').focus();
+      });
+    </script>
   </body>
 </html>

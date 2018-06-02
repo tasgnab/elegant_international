@@ -25,7 +25,7 @@
 		<div style="padding-top: 20px;" class="container">
 			<div class="row">
 				<div class="col-lg-12">
-					<a href="#" class="btn btn-default btn-lg"><span class="network-name">Check Other Collection</span></a>
+					<a href="<?=base_url('collection')?>" class="btn btn-default btn-lg"><span class="network-name">Check Other Collection</span></a>
 				</div>
 			</div>
 		</div>

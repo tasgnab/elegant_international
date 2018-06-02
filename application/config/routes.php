@@ -86,6 +86,8 @@ $route['dashboard/garment/brand/update']['post'] = 'dashboard/garment/do_update_
 $route['dashboard/garment/brand/delete']['post'] = 'dashboard/garment/do_delete_brand';
 $route['dashboard/garment/brand/show']['post'] = 'dashboard/garment/do_show_brand';
 
+$route['collection']['get'] = 'welcome/collection';
+
 
 
 

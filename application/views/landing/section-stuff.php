@@ -1,7 +1,9 @@
 	<section id="stuff" class="container content-section text-center">
 		<div class="container">
 			<div class="row">
-				<h2>Garment</h2>
+				<div class="col-lg-12">
+					<h2>Garment</h2>
+				</div>
 			</div>
 			<div class="row">
 				<?php foreach($brand as $b): ?> 
